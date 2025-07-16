@@ -43,13 +43,16 @@ if choice == "ML":
 
         if (type == 'Classification'):
             with st.spinner("Setting up ML experiment"):
-                setup(df,target=target)
+                setup(df,target=target,fold=3)
             setup_df = pull()
             st.info("This is the ML experiment settings")
             st.dataframe(setup_df)
 
             with st.spinner("Comparing models please wait"):
-                best_model = compare_models()
+                best_model = compare_models(
+                    turbo=True,
+                    include=["lr", "dt", "rf"]
+                )
 
             compare_df = pull()
             st.info("This is the ML model")
@@ -58,13 +61,16 @@ if choice == "ML":
 
         if (type == 'Regression'):
             with st.spinner("Setting up ML experiment"):
-                setupR(df,target=target)
+                setupR(df,target=target,fold=3)
             setup_df = pullR()
             st.info("This is the ML experiment settings")
             st.dataframe(setup_df)
 
             with st.spinner("Comparing models please wait"):
-                best_model = compare_modelsR()
+                best_model = compare_modelsR(
+                    turbo=True,
+                    include=["lr", "ridge", "rf"],
+                )
 
             compare_df = pullR()
             st.info("This is the ML model")
@@ -73,4 +79,4 @@ if choice == "ML":
 
 if choice == "Download":
     with open('best_model.pkl', 'rb') as f: 
-        st.download_button('Download Model', f, file_name="best_model.pkl")
+        st.download_button('Download the Best Model', f, file_name="best_model.pkl")
